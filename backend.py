@@ -48,7 +48,7 @@ def initialize_rag():
         chunks = text_splitter.split_documents(docs)
         
         # Add this line back right here (Line 41):
-        embeddings = GoogleGenerativeAIEmbeddings(model="gemini-embedding-001")
+        embeddings = GoogleGenerativeAIEmbeddings(model="text-embedding-004")
         
         # This is your current line 42:
         vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="./chroma_db_store")

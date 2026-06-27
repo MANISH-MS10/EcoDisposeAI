@@ -11,7 +11,7 @@ st.write("Navigate complex municipal recycling rules instantly via our verified 
 # Locally, it falls back seamlessly to localhost.
 if "RENDER" in os.environ:
     # Replace this string with your actual backend service URL once Render deploys it
-    BACKEND_URL = "https://YOUR-BACKEND-SERVICE-NAME.onrender.com/api/chat"
+    BACKEND_URL = "https://ecodispose-backend.onrender.com/api/chat"
 else:
     BACKEND_URL = "http://127.0.0.1:8000/api/chat"
 

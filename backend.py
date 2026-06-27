@@ -14,11 +14,11 @@ app = FastAPI(title="EcoDispose AI Core API")
 
 # Cloud-Safe API Key Configuration
 # If hosted on Render, it pulls from Environment Variables. Locally, it uses your fallback string.
-if "GOOGLE_API_KEY" not in os.environ:
-    os.environ["GOOGLE_API_KEY"] = # Read the key securely from the environment
-if "GOOGLE_API_KEY" not in os.environ:
-    # If running locally and the variable isn't set yet, look for a local environment fallback
-    os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY", "")
+# Cloud-Safe API Key Configuration
+if "GOOGLE_API_KEY" not in os.environ or not os.environ["GOOGLE_API_KEY"]:
+    # Fallback to local .env configuration if not running in production cloud
+    import dotenv
+    dotenv.load_dotenv()
 
 class QueryRequest(BaseModel):
     question: str

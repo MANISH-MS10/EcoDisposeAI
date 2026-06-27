@@ -33,13 +33,13 @@ def initialize_rag():
         loader = PyPDFLoader("ewaste_policy.pdf")
         docs = loader.load()
         
-        # OPTIMIZED: Lowered chunk size to handle the complex 55-page CPCB legal tables smoothly on Render
+        # FIXED: Removed duplicate blocks and tuned chunk size to 500 for fast processing
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
         chunks = text_splitter.split_documents(docs)
         
         embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
         
-        # FIXED: Removed duplicate embedding creation lines that were overloading the RAM
+        # FIXED: Removed duplicate vectorstore creation line to prevent memory crashes
         vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="./chroma_db_store")
         retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
         

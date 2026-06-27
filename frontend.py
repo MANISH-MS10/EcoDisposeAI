@@ -7,13 +7,9 @@ st.set_page_config(page_title="EcoDispose AI UI", page_icon="♻️", layout="ce
 st.title("♻️ EcoDispose AI: Urban E-Waste Assistant")
 st.write("Navigate complex municipal recycling rules instantly via our verified AI knowledge engine.")
 
-# Dynamic URL router: If hosted on Render, it communicates with the Render backend web service. 
-# Locally, it falls back seamlessly to localhost.
-if "RENDER" in os.environ:
-    # Replace this string with your actual backend service URL once Render deploys it
-    BACKEND_URL = "https://ecodispose-backend.onrender.com/api/chat"
-else:
-    BACKEND_URL = "http://127.0.0.1:8000/api/chat"
+# Dynamically reads the Render Environment Variable if present, otherwise defaults to local fallback
+BASE_URL = os.environ.get("BACKEND_URL", "http://127.0.0.1:8000")
+BACKEND_URL = f"{BASE_URL}/api/chat"
 
 if "messages" not in st.session_state:
     st.session_state.messages = []

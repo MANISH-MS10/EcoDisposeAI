@@ -5,8 +5,6 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-# Change your old langchain.chains imports to this:
-# Replace your legacy langchain_classic imports with these standard ones:
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
@@ -14,10 +12,7 @@ from langchain_core.prompts import ChatPromptTemplate
 app = FastAPI(title="EcoDispose AI Core API")
 
 # Cloud-Safe API Key Configuration
-# If hosted on Render, it pulls from Environment Variables. Locally, it uses your fallback string.
-# Cloud-Safe API Key Configuration
 if "GOOGLE_API_KEY" not in os.environ or not os.environ["GOOGLE_API_KEY"]:
-    # Fallback to local .env configuration if not running in production cloud
     import dotenv
     dotenv.load_dotenv()
 
@@ -38,20 +33,13 @@ def initialize_rag():
         loader = PyPDFLoader("ewaste_policy.pdf")
         docs = loader.load()
         
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
+        # OPTIMIZED: Lowered chunk size to handle the complex 55-page CPCB legal tables smoothly on Render
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
         chunks = text_splitter.split_documents(docs)
         
-        
-        
-        # Using a fixed path inside the server directory for ChromaDB storage
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=150)
-        chunks = text_splitter.split_documents(docs)
-        
-        # Add this line back right here (Line 41):
         embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
         
-        # This is your current line 42:
-        vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="./chroma_db_store")
+        # FIXED: Removed duplicate embedding creation lines that were overloading the RAM
         vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="./chroma_db_store")
         retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
         

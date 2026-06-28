@@ -8,7 +8,7 @@ st.set_page_config(page_title="EcoDispose AI UI", page_icon="♻️", layout="ce
 # 2. Inject Premium Flashy CSS Styling
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700&display=swap');
     
     /* Global Background and Typography */
     html, body, [data-testid="stAppViewContainer"] {
@@ -78,11 +78,11 @@ st.markdown("""
         color: #ffffff !important;
     }
     </style>
-""", unsafe_html=True)
+""", unsafe_allow_html=True)
 
 # 3. Render Flashy Visual Header
-st.markdown('<h1 class="main-title">♻️ EcoDispose AI</h1>', unsafe_html=True)
-st.markdown('<p class="subtitle">Navigate complex municipal recycling directories and verified vendor networks instantly.</p>', unsafe_html=True)
+st.markdown('<h1 class="main-title">♻️ EcoDispose AI</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Navigate complex municipal recycling directories and verified vendor networks instantly.</p>', unsafe_allow_html=True)
 
 # 4. Environment and Endpoint Management
 BASE_URL = os.environ.get("BACKEND_URL", "http://127.0.0.1:8000")
